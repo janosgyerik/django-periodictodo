@@ -22,7 +22,7 @@
     <ul>
     {% for progress in weekly_list %}
         {% for _ in progress.range %}
-            <li>[<a href="/tasks/tasks/mark-done?task={{ progress.task.id }}">done</a>] {{ progress.task.name }}</li>
+            <li>[<a href="{% url 'mark_done' task_id=progress.task.id %}">done</a>] {{ progress.task.name }}</li>
         {% endfor %}
     {% endfor %}
     </ul>
