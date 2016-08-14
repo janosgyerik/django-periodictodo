@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<h1>Pending tasks</h1>
+
+{% if daily_list %}
+    <h2>Daily</h2>
+    <ul>
+    {% for task in daily_list %}
+        <li><a href="/tasks/{{ task.id }}/">{{ task.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+</body>
+</html>
