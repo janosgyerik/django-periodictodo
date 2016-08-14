@@ -30,7 +30,7 @@ class Task(models.Model):
 class TaskRecord(models.Model):
     user = models.ForeignKey(User)
     task = models.ForeignKey(Task)
-    comment = models.TextField()
+    comment = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
