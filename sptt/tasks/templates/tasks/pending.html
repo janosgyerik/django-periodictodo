@@ -15,6 +15,13 @@
         <li>[<a href="/tasks/tasks/mark-done?task={{ progress.task.id }}">done</a>] {{ progress.task.name }}</li>
     {% endfor %}
     </ul>
+
+    <h2>Weekly</h2>
+    <ul>
+    {% for progress in weekly_list %}
+        <li>[<a href="/tasks/tasks/mark-done?task={{ progress.task.id }}">done</a>] {{ progress.task.name }}</li>
+    {% endfor %}
+    </ul>
 {% endif %}
 
 </body>
