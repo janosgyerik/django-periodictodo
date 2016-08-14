@@ -1,0 +1,10 @@
+*.pyc
+/logs/*
+/db.sqlite3
+/static/*
+/tmp
+/local/
+/virtualenv/
+
+# PyCharm
+.idea
