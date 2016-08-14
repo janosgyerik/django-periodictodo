@@ -36,8 +36,9 @@ class WeeklyPeriod(Period):
         return 'weekly'
 
     def get_start(self, date=None):
+        date = self._date(date)
         days_to_start = timedelta(days=date.weekday())
-        return self._date(date).replace(hour=0, minute=0, second=0, microsecond=0) - days_to_start
+        return date.replace(hour=0, minute=0, second=0, microsecond=0) - days_to_start
 
 DAILY = DailyPeriod()
 WEEKLY = WeeklyPeriod()
