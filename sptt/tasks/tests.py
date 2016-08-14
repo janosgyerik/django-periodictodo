@@ -37,8 +37,8 @@ class TestDailyProgress(TestCase):
         self.user = User.objects.create()
 
         self.period = periods.DAILY
-        self.task1 = Task.objects.create(user=self.user, name='Floss', period=self.period, count=2)
-        self.task2 = Task.objects.create(user=self.user, name='Anki French', period=self.period)
+        self.task1 = Task.objects.create(user=self.user, name='Floss', period=self.period.name, count=2)
+        self.task2 = Task.objects.create(user=self.user, name='Anki French', period=self.period.name)
 
         self.other_period_task = Task.objects.create(user=self.user, name='Gym', period=periods.WEEKLY)
 

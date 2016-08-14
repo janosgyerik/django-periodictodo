@@ -9,6 +9,10 @@ CHOICES = (
 
 
 class Period:
+    @abc.abstractproperty
+    def name(self):
+        raise NotImplementedError
+
     @abc.abstractmethod
     def get_start(self):
         raise NotImplementedError
@@ -18,11 +22,19 @@ class Period:
 
 
 class DailyPeriod(Period):
+    @property
+    def name(self):
+        return 'daily'
+
     def get_start(self, date=None):
         return self._date(date).replace(hour=0, minute=0, second=0, microsecond=0)
 
 
 class WeeklyPeriod(Period):
+    @property
+    def name(self):
+        return 'weekly'
+
     def get_start(self, date=None):
         days_to_start = timedelta(days=date.weekday())
         return self._date(date).replace(hour=0, minute=0, second=0, microsecond=0) - days_to_start
