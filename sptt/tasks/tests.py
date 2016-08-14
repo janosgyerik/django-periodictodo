@@ -37,7 +37,7 @@ class TestDailyStats(TestCase):
         self.user = User.objects.create()
 
         self.period_daily = periods.DAILY
-        self.daily_task1 = Task.objects.create(user=self.user, name='Floss', period=self.period_daily)
+        self.daily_task1 = Task.objects.create(user=self.user, name='Floss', period=self.period_daily, count=2)
         self.daily_task2 = Task.objects.create(user=self.user, name='Anki French', period=self.period_daily)
 
         self.period_weekly = periods.WEEKLY
@@ -52,4 +52,10 @@ class TestDailyStats(TestCase):
         api.record_task(self.user, self.daily_task1)
         api.record_task(self.user, self.daily_task2)
         api.record_task(self.user, self.weekly_task1)
+        self.assertEqual(2, len(api.load_stats(self.user, self.period_daily)))
+
+    def test_find_daily_grouped_by_task(self):
+        api.record_task(self.user, self.daily_task1)
+        api.record_task(self.user, self.daily_task1)
+        api.record_task(self.user, self.daily_task2)
         self.assertEqual(2, len(api.load_stats(self.user, self.period_daily)))
