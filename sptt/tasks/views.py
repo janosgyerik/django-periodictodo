@@ -6,7 +6,7 @@ from tasks import periods
 
 @login_required
 def pending_tasks(request):
-    daily_list = api.load_stats(request.user, periods.DAILY)
+    daily_list = api.load_progress(request.user, periods.DAILY)
     context = {
         'daily_list': daily_list,
     }

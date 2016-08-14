@@ -32,7 +32,7 @@ class TestWeeklyPeriod(TestCase):
         self.assertEqual(date, periods.WeeklyPeriod().get_start(date + timedelta(days=1)))
 
 
-class TestDailyStats(TestCase):
+class TestDailyProgress(TestCase):
     def setUp(self):
         self.user = User.objects.create()
 
@@ -45,27 +45,34 @@ class TestDailyStats(TestCase):
     def test_find_period(self):
         api.record_task(self.user, self.task1)
         api.record_task(self.user, self.task2)
-        self.assertEqual(2, len(api.load_stats(self.user, self.period)))
+        self.assertEqual(2, len(api.load_progress(self.user, self.period)))
 
     def test_find_only_specific_period(self):
         api.record_task(self.user, self.task1)
         api.record_task(self.user, self.task2)
         api.record_task(self.user, self.other_period_task)
-        self.assertEqual(2, len(api.load_stats(self.user, self.period)))
+        self.assertEqual(2, len(api.load_progress(self.user, self.period)))
 
     def test_find_grouped_by_task(self):
         api.record_task(self.user, self.task1)
         api.record_task(self.user, self.task1)
         api.record_task(self.user, self.task2)
-        self.assertEqual(2, len(api.load_stats(self.user, self.period)))
+        self.assertEqual(2, len(api.load_progress(self.user, self.period)))
+
+    def test_none_completed(self):
+        progress = api.load_progress(self.user, self.period)
+        self.assertEqual(0, progress[0].count)
+        self.assertEqual(0, progress[1].count)
 
     def test_half_completed(self):
         api.record_task(self.user, self.task1)
-        stat = api.load_stats(self.user, self.period)[0]
-        self.assertEqual(.5, stat.percentage)
+        progress = api.load_progress(self.user, self.period)
+        self.assertEqual(1, progress[0].count)
+        self.assertEqual(0, progress[1].count)
 
     def test_completed(self):
         api.record_task(self.user, self.task1)
         api.record_task(self.user, self.task1)
-        stat = api.load_stats(self.user, self.period)[0]
-        self.assertEqual(1, stat.percentage)
+        progress = api.load_progress(self.user, self.period)
+        self.assertEqual(2, progress[0].count)
+        self.assertEqual(0, progress[1].count)
