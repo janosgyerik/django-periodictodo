@@ -4,7 +4,7 @@ from datetime import datetime
 from collections import namedtuple
 import tasks.models as impl
 
-Progress = namedtuple('Progress', ['task', 'count'])
+Progress = namedtuple('Progress', ['task', 'count', 'range'])
 
 
 def record_task(user, task, date=None):
@@ -29,4 +29,4 @@ def load_progress(user, period, tags=(), date=None):
         records = list(group)
         task_id = records[0].task.id
         progress[task_id] = len(records)
-    return [Progress(task, progress[task.id]) for task in tasks]
+    return [Progress(task, progress[task.id], range(task.count - progress[task.id])) for task in tasks]

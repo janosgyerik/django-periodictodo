@@ -12,14 +12,18 @@
     <h2>Daily</h2>
     <ul>
     {% for progress in daily_list %}
-        <li>[<a href="/tasks/tasks/mark-done?task={{ progress.task.id }}">done</a>] {{ progress.task.name }}</li>
+        {% for _ in progress.range %}
+            <li>[<a href="/tasks/tasks/mark-done?task={{ progress.task.id }}">done</a>] {{ progress.task.name }}</li>
+        {% endfor %}
     {% endfor %}
     </ul>
 
     <h2>Weekly</h2>
     <ul>
     {% for progress in weekly_list %}
-        <li>[<a href="/tasks/tasks/mark-done?task={{ progress.task.id }}">done</a>] {{ progress.task.name }}</li>
+        {% for _ in progress.range %}
+            <li>[<a href="/tasks/tasks/mark-done?task={{ progress.task.id }}">done</a>] {{ progress.task.name }}</li>
+        {% endfor %}
     {% endfor %}
     </ul>
 {% endif %}
