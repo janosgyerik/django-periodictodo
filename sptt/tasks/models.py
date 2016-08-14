@@ -11,14 +11,14 @@ class Tag(models.Model):
 
 class Task(models.Model):
     user = models.ForeignKey(User)
-    name = models.CharField(max_length=100)
-    description = models.TextField()
     period = models.CharField(
         max_length=30,
         choices=periods.CHOICES
     )
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
     count = models.IntegerField(default=1)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True)
 
 
 class TaskRecord(models.Model):
