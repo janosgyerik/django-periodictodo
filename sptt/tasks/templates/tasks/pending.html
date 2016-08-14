@@ -11,8 +11,8 @@
 {% if daily_list %}
     <h2>Daily</h2>
     <ul>
-    {% for task in daily_list %}
-        <li><a href="/tasks/{{ task.id }}/">{{ task.name }}</a></li>
+    {% for progress in daily_list %}
+        <li>[<a href="/tasks/tasks/mark-done?task={{ progress.task.id }}">done</a>] {{ progress.task.name }}</li>
     {% endfor %}
     </ul>
 {% endif %}
