@@ -59,3 +59,14 @@ class TestDailyStats(TestCase):
         api.record_task(self.user, self.daily_task1)
         api.record_task(self.user, self.daily_task2)
         self.assertEqual(2, len(api.load_stats(self.user, self.period_daily)))
+
+    def test_daily_half_completed(self):
+        api.record_task(self.user, self.daily_task1)
+        stat = api.load_stats(self.user, self.period_daily)[0]
+        self.assertEqual(.5, stat.percentage)
+
+    def test_daily_completed(self):
+        api.record_task(self.user, self.daily_task1)
+        api.record_task(self.user, self.daily_task1)
+        stat = api.load_stats(self.user, self.period_daily)[0]
+        self.assertEqual(1, stat.percentage)

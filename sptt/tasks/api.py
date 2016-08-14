@@ -2,7 +2,6 @@ from itertools import groupby
 from datetime import datetime
 
 from collections import namedtuple
-from django.db.models import Count
 import tasks.models as impl
 
 Stat = namedtuple('Stat', ['task', 'percentage'])
@@ -21,12 +20,12 @@ def load_stats(user, period, tags=(), date=None):
     start = period.get_start()
 
     records = impl.TaskRecord.objects \
-        .filter(user=user, task__period=period, created_at__gte=start, created_at__lte=date) \
-        .annotate(count=Count('task'))
+        .filter(user=user, task__period=period, created_at__gte=start, created_at__lte=date)
 
     stats = []
     for key, group in groupby(records, lambda x: x.task.pk):
-        tasks = list(group)
-        task = tasks[0]
-        stats.append(Stat(task, len(tasks) / task.count))
+        records = list(group)
+        task = records[0].task
+        percentage = len(records) / task.count
+        stats.append(Stat(task, percentage))
     return stats
