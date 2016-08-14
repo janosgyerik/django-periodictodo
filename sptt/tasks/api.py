@@ -22,7 +22,8 @@ def load_progress(user, period, tags=(), date=None):
     start = period.get_start()
 
     records = impl.TaskRecord.objects \
-        .filter(user=user, task__period=period.name, created_at__gte=start, created_at__lte=date)
+        .filter(user=user, task__period=period.name, created_at__gte=start, created_at__lte=date) \
+        .order_by('task')
 
     progress = dict([(task.id, 0) for task in tasks])
     for key, group in groupby(records, lambda x: x.task.pk):

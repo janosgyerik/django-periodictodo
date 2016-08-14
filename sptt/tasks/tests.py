@@ -76,3 +76,11 @@ class TestDailyProgress(TestCase):
         progress = api.load_progress(self.user, self.period)
         self.assertEqual(2, progress[0].count)
         self.assertEqual(0, progress[1].count)
+
+    def test_completed_with_interleaved_task(self):
+        api.record_task(self.user, self.task1)
+        api.record_task(self.user, self.task2)
+        api.record_task(self.user, self.task1)
+        progress = api.load_progress(self.user, self.period)
+        self.assertEqual(2, progress[0].count)
+        self.assertEqual(1, progress[1].count)
