@@ -36,37 +36,36 @@ class TestDailyStats(TestCase):
     def setUp(self):
         self.user = User.objects.create()
 
-        self.period_daily = periods.DAILY
-        self.daily_task1 = Task.objects.create(user=self.user, name='Floss', period=self.period_daily, count=2)
-        self.daily_task2 = Task.objects.create(user=self.user, name='Anki French', period=self.period_daily)
+        self.period = periods.DAILY
+        self.task1 = Task.objects.create(user=self.user, name='Floss', period=self.period, count=2)
+        self.task2 = Task.objects.create(user=self.user, name='Anki French', period=self.period)
 
-        self.period_weekly = periods.WEEKLY
-        self.weekly_task1 = Task.objects.create(user=self.user, name='Gym', period=self.period_weekly)
+        self.other_period_task = Task.objects.create(user=self.user, name='Gym', period=periods.WEEKLY)
 
-    def test_find_daily(self):
-        api.record_task(self.user, self.daily_task1)
-        api.record_task(self.user, self.daily_task2)
-        self.assertEqual(2, len(api.load_stats(self.user, self.period_daily)))
+    def test_find_period(self):
+        api.record_task(self.user, self.task1)
+        api.record_task(self.user, self.task2)
+        self.assertEqual(2, len(api.load_stats(self.user, self.period)))
 
-    def test_find_daily_only(self):
-        api.record_task(self.user, self.daily_task1)
-        api.record_task(self.user, self.daily_task2)
-        api.record_task(self.user, self.weekly_task1)
-        self.assertEqual(2, len(api.load_stats(self.user, self.period_daily)))
+    def test_find_only_specific_period(self):
+        api.record_task(self.user, self.task1)
+        api.record_task(self.user, self.task2)
+        api.record_task(self.user, self.other_period_task)
+        self.assertEqual(2, len(api.load_stats(self.user, self.period)))
 
-    def test_find_daily_grouped_by_task(self):
-        api.record_task(self.user, self.daily_task1)
-        api.record_task(self.user, self.daily_task1)
-        api.record_task(self.user, self.daily_task2)
-        self.assertEqual(2, len(api.load_stats(self.user, self.period_daily)))
+    def test_find_grouped_by_task(self):
+        api.record_task(self.user, self.task1)
+        api.record_task(self.user, self.task1)
+        api.record_task(self.user, self.task2)
+        self.assertEqual(2, len(api.load_stats(self.user, self.period)))
 
-    def test_daily_half_completed(self):
-        api.record_task(self.user, self.daily_task1)
-        stat = api.load_stats(self.user, self.period_daily)[0]
+    def test_half_completed(self):
+        api.record_task(self.user, self.task1)
+        stat = api.load_stats(self.user, self.period)[0]
         self.assertEqual(.5, stat.percentage)
 
-    def test_daily_completed(self):
-        api.record_task(self.user, self.daily_task1)
-        api.record_task(self.user, self.daily_task1)
-        stat = api.load_stats(self.user, self.period_daily)[0]
+    def test_completed(self):
+        api.record_task(self.user, self.task1)
+        api.record_task(self.user, self.task1)
+        stat = api.load_stats(self.user, self.period)[0]
         self.assertEqual(1, stat.percentage)
