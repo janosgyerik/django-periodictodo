@@ -8,6 +8,9 @@ class Tag(models.Model):
     slug = models.SlugField()
     name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
+
 
 class Task(models.Model):
     user = models.ForeignKey(User)
@@ -20,9 +23,15 @@ class Task(models.Model):
     count = models.IntegerField(default=1)
     tags = models.ManyToManyField(Tag, blank=True)
 
+    def __str__(self):
+        return '{}, {} x{}'.format(self.period, self.name, self.count)
+
 
 class TaskRecord(models.Model):
     user = models.ForeignKey(User)
     task = models.ForeignKey(Task)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return '{}, {}, {}'.format(self.user, self.task, self.created_at)
