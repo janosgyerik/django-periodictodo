@@ -13,7 +13,7 @@
     <ul>
     {% for progress in daily_list %}
         {% for _ in progress.pending %}
-            <li>[<a href="{% url 'mark_done' task_id=progress.task.id %}">done</a>] {{ progress.task.name }}</li>
+            <li>{{ progress.task.name }} [<a href="{% url 'mark_done' task_id=progress.task.id %}">done</a>]</li>
         {% endfor %}
         {% for _ in progress.done %}
             <li><strike>{{ progress.task.name }}</strike></li>
@@ -25,7 +25,7 @@
     <ul>
     {% for progress in weekly_list %}
         {% for _ in progress.pending %}
-            <li>[<a href="{% url 'mark_done' task_id=progress.task.id %}">done</a>] {{ progress.task.name }}</li>
+            <li>{{ progress.task.name }} [<a href="{% url 'mark_done' task_id=progress.task.id %}">done</a>]</li>
         {% endfor %}
         {% for _ in progress.done %}
             <li><strike>{{ progress.task.name }}</strike></li>
