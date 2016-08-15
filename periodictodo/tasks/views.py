@@ -18,7 +18,7 @@ def add_pending_done(progress_list):
 
 
 @login_required
-def pending_tasks(request):
+def task_list(request):
     daily_list = add_pending_done(api.load_progress(request.user, periods.DAILY))
     weekly_list = add_pending_done(api.load_progress(request.user, periods.WEEKLY))
 
@@ -26,10 +26,10 @@ def pending_tasks(request):
         'daily_list': daily_list,
         'weekly_list': weekly_list,
     }
-    return render(request, 'tasks/pending.html', context)
+    return render(request, 'tasks/index.html', context)
 
 
 @login_required
 def mark_done(request, task_id):
     api.record_task(request.user, Task.objects.get(pk=task_id))
-    return redirect('pending_tasks')
+    return redirect('task_list')
