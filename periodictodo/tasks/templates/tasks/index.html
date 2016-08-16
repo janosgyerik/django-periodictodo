@@ -12,6 +12,9 @@
     <h2>Daily</h2>
     <ul>
     {% for progress in daily_list %}
+        {% if progress.task.count <= progress.count %}
+            <li>{{ progress.task.name }} [<a href="{% url 'mark_done' task_id=progress.task.id %}">extra</a>]</li>
+        {% endif %}
         {% for _ in progress.pending %}
             <li>{{ progress.task.name }} [<a href="{% url 'mark_done' task_id=progress.task.id %}">done</a>]</li>
         {% endfor %}
@@ -24,6 +27,9 @@
     <h2>Weekly</h2>
     <ul>
     {% for progress in weekly_list %}
+        {% if progress.task.count <= progress.count %}
+            <li>{{ progress.task.name }} [<a href="{% url 'mark_done' task_id=progress.task.id %}">extra</a>]</li>
+        {% endif %}
         {% for _ in progress.pending %}
             <li>{{ progress.task.name }} [<a href="{% url 'mark_done' task_id=progress.task.id %}">done</a>]</li>
         {% endfor %}
